@@ -5,9 +5,16 @@ import { User, MapPin, Package, CreditCard, Settings, Bell, Lock, Phone, Mail } 
 export default function Profile() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("profile");
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   const handleMyOrdersClick = () => {
     navigate('/my-orders');
+  };
+
+  const handleDarkThemeToggle = () => {
+    setIsDarkTheme(!isDarkTheme);
+    localStorage.setItem('darkTheme', isDarkTheme ? 'false' : 'true'); // Persist theme preference
+    document.body.classList.toggle('dark'); // Apply dark theme class
   };
 
   const tabs = [
@@ -24,8 +31,8 @@ export default function Profile() {
         {/* Header Card */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div className="bg-indigo-100 p-4 rounded-full">
-              <User className="h-12 w-12 text-indigo-600" />
+            <div className="bg-orange-100 p-4 rounded-full">
+              <User className="h-12 w-12 text-orange-600" />
             </div>
             <div className="flex-1">
               <h1 className="text-2xl font-bold">John Doe</h1>
@@ -41,6 +48,11 @@ export default function Profile() {
           </div>
         </div>
 
+        {/* Dark Theme Toggle Button */}
+        <button onClick={handleDarkThemeToggle} className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white">
+          {isDarkTheme ? 'Light Theme' : 'Dark Theme'}
+        </button>
+
         {/* Tabs Navigation */}
         <div className="border-b border-gray-200">
           <nav className="flex flex-wrap -mb-px">
@@ -50,7 +62,7 @@ export default function Profile() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`mr-2 py-4 px-4 text-sm font-medium border-b-2 ${
                   activeTab === tab.id
-                    ? 'border-indigo-500 text-indigo-600'
+                    ? 'border-orange-500 text-orange-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
@@ -131,7 +143,7 @@ export default function Profile() {
                   <h3 className="font-medium">Recent Orders</h3>
                   <button
                     onClick={handleMyOrdersClick}
-                    className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                    className="px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700"
                   >
                     View All Orders
                   </button>
@@ -140,7 +152,7 @@ export default function Profile() {
                   {[1, 2, 3].map((order) => (
                     <div key={order} className="p-4 flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <Package className="h-8 w-8 text-indigo-600" />
+                        <Package className="h-8 w-8 text-orange-600" />
                         <div>
                           <p className="font-medium">Order #{order}23456</p>
                           <p className="text-sm text-gray-500">Placed on Jan {order + 10}, 2024</p>
@@ -170,7 +182,7 @@ export default function Profile() {
                   <div className="border rounded-lg p-4">
                     <div className="flex justify-between items-start">
                       <div className="flex items-center gap-3">
-                        <CreditCard className="h-6 w-6 text-indigo-600" />
+                        <CreditCard className="h-6 w-6 text-orange-600" />
                         <div>
                           <p className="font-medium">•••• 4242</p>
                           <p className="text-sm text-gray-500">Expires 12/25</p>

@@ -125,11 +125,10 @@ export default function Home() {
     return [...Array(5)].map((_, index) => (
       <Star
         key={index}
-        className={`h-4 w-4 ${
-          index < Math.floor(rating)
-            ? 'text-yellow-400 fill-yellow-400'
-            : 'text-gray-300'
-        }`}
+        className={`h-4 w-4 ${index < Math.floor(rating)
+          ? 'text-yellow-400 fill-yellow-400'
+          : 'text-gray-300'
+          }`}
       />
     ));
   };
@@ -137,7 +136,7 @@ export default function Home() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600" />
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-600" />
       </div>
     );
   }
@@ -172,7 +171,7 @@ export default function Home() {
         </div>
       )}
 
-			{/* Search Bar */}
+      {/* Search Bar */}
       <div className="relative mb-12">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Search className="h-5 w-5 text-gray-400" />
@@ -182,7 +181,7 @@ export default function Home() {
           placeholder="Search for your favorite dishes..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-4 py-4 border-0 ring-1 ring-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 transition-shadow text-lg"
+          className="w-full pl-10 pr-4 py-4 border-0 ring-1 ring-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 transition-shadow text-lg"
         />
       </div>
 
@@ -190,20 +189,20 @@ export default function Home() {
       <div className="mb-16">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
-            <TrendingUp className="h-6 w-6 text-indigo-600" />
+            <TrendingUp className="h-6 w-6 text-orange-600" />
             <h2 className="text-2xl font-bold">Most Popular Dishes</h2>
           </div>
-          <Link to="/menu" className="text-indigo-600 hover:text-indigo-700 font-medium">View All</Link>
+          <Link to="/menu" className="text-orange-600 hover:text-orange-700 font-medium">View All</Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {mostPopularDishes.map((item) => (
             <Link key={item.id} to={`/meal/${item.id}`} className="group">
               <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={item.image} 
-                    alt={item.name} 
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" 
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-sm font-medium">
                     ${item.price.toFixed(2)}
@@ -216,13 +215,18 @@ export default function Home() {
                   <h3 className="text-lg font-medium text-gray-900 mb-1">{item.name}</h3>
                   <p className="text-gray-500 text-sm line-clamp-2">{item.description}</p>
                   <div className="mt-3 flex items-center justify-between">
-                    <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-                      item.dietaryType === 'veg' 
-                        ? 'bg-green-100 text-green-700' 
-                        : 'bg-red-100 text-red-700'
-                    }`}>
-                      {item.dietaryType}
-                    </span>
+                    <div className="flex items-center space-x-1">
+                      <div
+                        className={`flex items-center justify-center w-4 h-4 border-2 rounded-sm ${item.dietaryType === 'veg' ? 'border-green-700' : 'border-red-700'
+                          }`}
+                      >
+                        <div
+                          className={`w-2 h-2 rounded-full ${item.dietaryType === 'veg' ? 'bg-green-700' : 'bg-red-700'
+                            }`}
+                        ></div>
+                      </div>
+                    </div>
+
                     <span className="text-sm text-gray-500">{item.calories} cal</span>
                   </div>
                 </div>
@@ -235,7 +239,7 @@ export default function Home() {
       {/* Recent Reviews */}
       <div className="mb-16">
         <div className="flex items-center gap-2 mb-8">
-          <Star className="h-6 w-6 text-indigo-600 fill-indigo-600" />
+          <Star className="h-6 w-6 text-orange-600 fill-orange-600" />
           <h2 className="text-2xl font-bold">Recent Reviews</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -275,7 +279,7 @@ export default function Home() {
       {/* Recently Viewed */}
       <div>
         <div className="flex items-center gap-2 mb-8">
-          <Clock className="h-6 w-6 text-indigo-600" />
+          <Clock className="h-6 w-6 text-orange-600" />
           <h2 className="text-2xl font-bold">Recently Viewed</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -283,10 +287,10 @@ export default function Home() {
             <Link key={item.id} to={`/meal/${item.id}`} className="group">
               <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={item.image} 
+                  <img
+                    src={item.image}
                     alt={item.name}
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" 
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-sm font-medium">
                     ${item.price.toFixed(2)}
@@ -299,13 +303,17 @@ export default function Home() {
                   <h3 className="text-lg font-medium text-gray-900 mb-1">{item.name}</h3>
                   <p className="text-gray-500 text-sm line-clamp-2">{item.description}</p>
                   <div className="mt-3 flex items-center justify-between">
-                    <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-                      item.dietaryType === 'veg' 
-                        ? 'bg-green-100 text-green-700' 
-                        : 'bg-red-100 text-red-700'
-                    }`}>
-                      {item.dietaryType}
-                    </span>
+                    <div className="flex items-center space-x-1">
+                      <div
+                        className={`flex items-center justify-center w-4 h-4 border-2 rounded-sm ${item.dietaryType === 'veg' ? 'border-green-700' : 'border-red-700'
+                          }`}
+                      >
+                        <div
+                          className={`w-2 h-2 rounded-full ${item.dietaryType === 'veg' ? 'bg-green-700' : 'bg-red-700'
+                            }`}
+                        ></div>
+                      </div>
+                    </div>
                     <span className="text-sm text-gray-500">{item.calories} cal</span>
                   </div>
                 </div>

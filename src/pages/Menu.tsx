@@ -47,7 +47,7 @@ export default function Menu() {
       <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
         <div className="w-16 h-16 relative animate-spin">
           <div className="absolute inset-0 rounded-full border-4 border-gray-200"></div>
-          <div className="absolute inset-0 rounded-full border-4 border-indigo-600 border-t-transparent animate-spin"></div>
+          <div className="absolute inset-0 rounded-full border-4 border-orange-600 border-t-transparent animate-spin"></div>
         </div>
       </div>
     );
@@ -56,7 +56,7 @@ export default function Menu() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
-      <div className="relative h-72 bg-indigo-600 overflow-hidden">
+      <div className="relative h-72 bg-orange-600 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-black/30 z-10" />
           <img

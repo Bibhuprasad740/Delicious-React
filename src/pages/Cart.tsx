@@ -22,7 +22,7 @@ export default function Cart() {
         <p className="text-gray-500 mb-4">Add some delicious meals to get started!</p>
         <Link
           to="/"
-          className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+          className="px-6 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700 transition-colors"
         >
           Browse Menu
         </Link>

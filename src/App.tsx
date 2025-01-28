@@ -14,6 +14,7 @@ import OrderDetails from './pages/OrderDetails';
 import MyOrders from './pages/MyOrders';
 import Menu from './pages/Menu';
 import CategoryPage from './pages/CategoryPage';
+import Offers from './pages/Offers';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
               <Route path="/my-orders" element={<MyOrders />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/menu/category/:categoryId" element={<CategoryPage />} />
+              <Route path="/offers" element={<Offers />} />
             </Routes>
           </div>
           <nav className="bg-white border-t border-gray-200 fixed bottom-0 left-0 right-0 z-10">

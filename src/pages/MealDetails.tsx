@@ -92,7 +92,7 @@ export default function MealDetails() {
   if (isLoading || !meal) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600" />
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-600" />
       </div>
     );
   }
@@ -119,7 +119,7 @@ export default function MealDetails() {
                     onClick={() => setActiveImage(index)}
                     className={`relative rounded-lg overflow-hidden h-24 transition-all duration-200 ${
                       activeImage === index
-                        ? 'ring-2 ring-indigo-600 scale-95'
+                        ? 'ring-2 ring-orange-600 scale-95'
                         : 'hover:opacity-80'
                     }`}
                   >
@@ -180,7 +180,7 @@ export default function MealDetails() {
                       key={index}
                       className="flex items-center gap-2 text-gray-600 bg-gray-50 px-4 py-2 rounded-lg"
                     >
-                      <span className="h-2 w-2 rounded-full bg-indigo-600" />
+                      <span className="h-2 w-2 rounded-full bg-orange-600" />
                       <span>{ingredient}</span>
                     </div>
                   ))}
@@ -211,7 +211,7 @@ export default function MealDetails() {
                     </div>
                     <button
                       onClick={handleAddToCart}
-                      className="flex items-center bg-orange-600 text-white text-lg font-medium px-5 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition-all"
+                      className="flex items-center bg-orange-600 text-white text-lg font-medium px-5 py-3 rounded-lg shadow-md hover:bg-orange-700 transition-all"
                       disabled={isAddingToCart}
                     >
                       <ShoppingCart className="h-5 w-5 mr-2" />

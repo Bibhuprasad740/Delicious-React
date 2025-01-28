@@ -110,7 +110,7 @@ export default function OrderDetails() {
                 {estimatedDeliveryTime()} ago
               </span>
             </div>
-            <div className="flex items-center gap-2 text-indigo-100">
+            <div className="flex items-center gap-2 text-orange-100">
               <Clock className="h-4 w-4" />
               <span>{new Date(order.createdAt).toLocaleString()}</span>
             </div>
