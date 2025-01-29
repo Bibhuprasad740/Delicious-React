@@ -14,6 +14,16 @@ interface CartStore {
   clearCart: () => void;
 }
 
+interface CartItem {
+  item: FoodItem;
+  quantity: number;
+  isBirthdaySpecial?: boolean;
+  addons?: {
+    cutlery: boolean;
+    softDrinks: number;
+  };
+}
+
 // Load cart from localStorage on store initialization
 const loadCartFromStorage = (): CartItem[] => {
   const storedCart = localStorage.getItem('cart');

@@ -1,110 +1,77 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Utensils, Coffee, IceCream, Pizza } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Menu() {
-  const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setCategories([
-          {
-            id: '1',
-            name: 'Main Dishes',
-            description: 'Delicious main courses from around the world',
-            image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=800',
-            itemCount: 24
-          },
-          {
-            id: '2',
-            name: 'Appetizers',
-            description: 'Start your meal right with our appetizers',
-            image: 'https://images.unsplash.com/photo-1541529086526-db283c563270?auto=format&fit=crop&q=80&w=800',
-            itemCount: 16
-          },
-          {
-            id: '3',
-            name: 'Desserts',
-            description: 'Sweet treats to end your meal',
-            image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&q=80&w=800',
-            itemCount: 12
-          }
-        ]);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
-        <div className="w-16 h-16 relative animate-spin">
-          <div className="absolute inset-0 rounded-full border-4 border-gray-200"></div>
-          <div className="absolute inset-0 rounded-full border-4 border-orange-600 border-t-transparent animate-spin"></div>
-        </div>
-      </div>
-    );
-  }
+  const categories = [
+    {
+      id: "main-dishes",
+      name: "Main Dishes",
+      description: "Delicious meals crafted with fresh ingredients",
+      icon: Utensils,
+      itemCount: 24,
+    },
+    {
+      id: "beverages",
+      name: "Beverages",
+      description: "Refreshing drinks to complement your meal",
+      icon: Coffee,
+      itemCount: 18,
+    },
+    {
+      id: "desserts",
+      name: "Desserts",
+      description: "Sweet treats to end your meal on a high note",
+      icon: IceCream,
+      itemCount: 12,
+    },
+    {
+      id: "pizzas",
+      name: "Pizzas",
+      description: "Crispy and cheesy pizzas with a variety of toppings",
+      icon: Pizza,
+      itemCount: 15,
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header Section */}
-      <div className="relative h-72 bg-orange-600 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-black/30 z-10" />
-          <img
-            src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=2000"
-            alt="Restaurant interior"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Our Menu</h1>
-          <p className="text-lg text-white/90 max-w-xl">
-            Explore our carefully curated selection of dishes, crafted with passion and the finest ingredients
-          </p>
-        </div>
+    <div className="min-h-screen py-10 px-6 flex flex-col items-center">
+      <div className="text-center mb-10">
+        <h1 className="text-4xl font-extrabold text-orange-600">Our Menu</h1>
+        <p className="text-gray-700 mt-2 text-lg max-w-xl">
+          Explore a wide range of delicious meals, beverages, and desserts.
+        </p>
       </div>
 
-      {/* Categories List */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {categories.map((category, index) => (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
-            key={category.id}
-            className="mb-6"
-          >
-            <Link
-              to={`/menu/category/${category.id}`}
-              className="flex bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        {categories.map((category, index) => {
+          const Icon = category.icon;
+          return (
+            <motion.div
+              key={category.id}
+              className="bg-white rounded-lg shadow-lg p-6 flex items-center gap-4 border border-gray-200 hover:shadow-xl transition-all cursor-pointer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
             >
-              <div className="w-32 h-32 flex-shrink-0 relative">
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="w-full h-full object-cover"
-                />
+              <div className="p-4 bg-orange-100 rounded-full">
+                <Icon className="h-10 w-10 text-orange-600" />
               </div>
-              <div className="flex-1 p-4">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{category.name}</h3>
-                <p className="text-gray-600 text-sm mb-4">{category.description}</p>
-                <div className="text-sm font-medium text-gray-700 flex items-center">
-                  {category.itemCount} items
-                  <ChevronRight className="ml-2 h-4 w-4 text-gray-500" />
-                </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-bold text-gray-900">{category.name}</h2>
+                <p className="text-gray-600 text-sm mt-1">{category.description}</p>
+                <p className="text-orange-600 font-semibold mt-2">{category.itemCount} items</p>
               </div>
-            </Link>
-          </motion.div>
-        ))}
+              <Link
+                to={`/category/${category.id}`}
+                className="text-orange-500 font-bold text-lg"
+              >
+                →
+              </Link>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
