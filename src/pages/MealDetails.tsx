@@ -4,9 +4,11 @@ import { toast } from 'react-hot-toast';
 import { Star, Minus, Plus, ShoppingCart, Leaf, Drumstick } from 'lucide-react';
 import { FoodItem, Review } from '../types';
 import { useCartStore } from '../store/cartStore';
+import foodItems from '../dummy_data/food_items_data';
+import reviewsDummyData from '../dummy_data/reviews_data';
 
 export default function MealDetails() {
-  const { id } = useParams();
+  const { foodItemId } = useParams();
   const addToCart = useCartStore((state) => state.addToCart);
   const [meal, setMeal] = useState<FoodItem | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -16,57 +18,20 @@ export default function MealDetails() {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   useEffect(() => {
-    // Using dummy data for demonstration
-    setMeal({
-      id: '1',
-      name: 'Grilled Salmon Bowl',
-      description: 'Fresh Atlantic salmon served with quinoa, roasted vegetables, and our signature sauce',
-      price: 24.99,
-      image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=800',
-      categoryId: '1',
-      rating: 4.8,
-      calories: 650,
-      ingredients: [
-        'Atlantic Salmon',
-        'Quinoa',
-        'Roasted Bell Peppers',
-        'Broccoli',
-        'Cherry Tomatoes',
-        'Olive Oil',
-        'Lemon',
-        'Fresh Herbs'
-      ],
-      dietaryType: 'non-veg',
-      images: [
-        'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=800',
-        'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800',
-        'https://images.unsplash.com/photo-1580959375944-abd7e991f971?auto=format&fit=crop&q=80&w=800'
-      ]
-    });
+    const selectedFood = foodItems.find((item) => item.id === foodItemId);
+    if (selectedFood) {
+      setMeal(selectedFood);
+      setIsLoading(false);
+    } else {
+      toast.error('No food found with the given ID');
+      history.back();
+    }
 
-    setReviews([
-      {
-        id: '1',
-        userId: '1',
-        userName: 'John Doe',
-        foodId: '1',
-        rating: 5,
-        comment: 'Absolutely delicious! The salmon was cooked perfectly.',
-        createdAt: '2024-03-10T10:00:00Z'
-      },
-      {
-        id: '2',
-        userId: '2',
-        userName: 'Jane Smith',
-        foodId: '1',
-        rating: 4,
-        comment: 'Great healthy option, would order again.',
-        createdAt: '2024-03-09T15:30:00Z'
-      }
-    ]);
-
+    const filteredReviews = reviewsDummyData.filter((review) => review.foodItemId === foodItemId);
+    setReviews(filteredReviews);
+    
     setIsLoading(false);
-  }, [id]);
+  }, [foodItemId]);
 
   const handleQuantityChange = (delta: number) => {
     const newQuantity = quantity + delta;
@@ -91,7 +56,7 @@ export default function MealDetails() {
 
   if (isLoading || !meal) {
     return (
-      <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+      <div className="mb-10 flex items-center justify-center h-[calc(100vh-4rem)]">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-600" />
       </div>
     );

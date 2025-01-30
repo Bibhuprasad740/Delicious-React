@@ -26,7 +26,7 @@ export default function Profile() {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="mb-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="space-y-8">
         {/* Header Card */}
         <div className="bg-white rounded-lg shadow-md p-6">

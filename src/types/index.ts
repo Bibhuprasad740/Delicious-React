@@ -20,6 +20,7 @@ export interface FoodItem {
   price: number;
   image: string;
   categoryId: string;
+  category: string;
   rating: number;
   calories: number;
   ingredients: string[];
@@ -45,7 +46,7 @@ export interface Review {
   id: string;
   userId: string;
   userName: string;
-  foodId: string;
+  foodItemId: string;
   rating: number;
   comment: string;
   createdAt: string;

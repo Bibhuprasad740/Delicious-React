@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, Star, Search, Clock, TrendingUp } from 'lucide-react';
 import api from '../lib/axios';
 import { FoodItem, Review } from '../types';
+import foodItems from '../dummy_data/food_items_data';
 
 export default function Home() {
   const [mealOfDay, setMealOfDay] = useState<FoodItem | null>(null);
@@ -12,51 +13,14 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setMealOfDay({
-          id: '1',
-          name: 'Grilled Salmon Bowl',
-          description: 'Fresh Atlantic salmon served with quinoa, roasted vegetables, and our signature sauce',
-          price: 24.99,
-          image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=800',
-          categoryId: '1',
-          rating: 4.8,
-          calories: 650,
-          ingredients: ['Atlantic Salmon', 'Quinoa', 'Roasted Vegetables', 'Signature Sauce'],
-          dietaryType: 'non-veg',
-          images: ['https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=800']
-        });
-
-        setMostPopularDishes([
-          {
-            id: '1',
-            name: 'Grilled Salmon Bowl',
-            description: 'Fresh Atlantic salmon served with quinoa, roasted vegetables',
-            price: 24.99,
-            image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=800',
-            categoryId: '1',
-            rating: 4.8,
-            calories: 650,
-            ingredients: ['Salmon', 'Quinoa', 'Vegetables'],
-            dietaryType: 'non-veg',
-            images: ['https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=800']
-          },
-          {
-            id: '2',
-            name: 'Chicken Tikka Masala',
-            description: 'Tender chicken in a rich, creamy tomato sauce',
-            price: 18.99,
-            image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&q=80&w=800',
-            categoryId: '2',
-            rating: 4.6,
-            calories: 750,
-            ingredients: ['Chicken', 'Tomato Sauce', 'Spices'],
-            dietaryType: 'non-veg',
-            images: ['https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&q=80&w=800']
-          },
-        ]);
+        // randomly choose any index from foodItems array
+        const randomIndex = Math.floor(Math.random() * foodItems.length);
+        setMealOfDay(foodItems[randomIndex]);
+        setMostPopularDishes([foodItems[(randomIndex + 1)%foodItems.length], foodItems[(randomIndex + 2)%foodItems.length], foodItems[(randomIndex + 3)%foodItems.length]]);
 
         setRecentReviews([
           {
@@ -83,34 +47,8 @@ export default function Home() {
           },
         ]);
 
-        setRecentlyViewed([
-          {
-            id: '3',
-            name: 'Vegetable Stir Fry',
-            description: 'Fresh seasonal vegetables in a savory sauce',
-            price: 16.99,
-            image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&q=80&w=800',
-            categoryId: '3',
-            rating: 4.3,
-            calories: 450,
-            ingredients: ['Mixed Vegetables', 'Tofu', 'Sauce'],
-            dietaryType: 'veg',
-            images: ['https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&q=80&w=800']
-          },
-          {
-            id: '4',
-            name: 'Sushi Platter',
-            description: 'Assorted fresh sushi rolls',
-            price: 28.99,
-            image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&q=80&w=800',
-            categoryId: '4',
-            rating: 4.9,
-            calories: 550,
-            ingredients: ['Rice', 'Fish', 'Nori'],
-            dietaryType: 'non-veg',
-            images: ['https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&q=80&w=800']
-          },
-        ]);
+        setRecentlyViewed([foodItems[(randomIndex + 4)%foodItems.length], foodItems[(randomIndex + 5)%foodItems.length], foodItems[(randomIndex + 6)%foodItems.length]]);
+
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -142,7 +80,7 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="mb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Meal of the Day Banner */}
       {mealOfDay && (
         <div className="relative h-[500px] rounded-2xl overflow-hidden mb-16 group">

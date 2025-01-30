@@ -99,7 +99,7 @@ export default function OrderDetails() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="mb-10 min-h-screen bg-gray-50">
       <div className="w-full px-0 py-0">
         <div className="bg-white shadow-lg overflow-hidden">
           {/* Header Section */}
