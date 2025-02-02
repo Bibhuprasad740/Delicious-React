@@ -18,6 +18,7 @@ import CategoryPage from './pages/CategoryPage';
 import Offers from './pages/Offers';
 import BirthdaySpecial from './pages/BirthdaySpecial';
 import CategoryDetails from './pages/CategoryDetails';
+import MonthlyMeal from './pages/MonthlyMeal';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
               <Route path="/menu/category/:categoryId" element={<CategoryPage />} />
               <Route path="/offers" element={<Offers />} />
               <Route path="/offers/birthday-special" element={<BirthdaySpecial />} />
+              <Route path="/offers/monthly-meal" element={<MonthlyMeal />} />
               <Route path="/category/:categoryId" element={<CategoryDetails />} />
             </Routes>
           </div>

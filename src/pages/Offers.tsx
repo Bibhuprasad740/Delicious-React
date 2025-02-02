@@ -1,110 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Timer, Tag, Percent, AlertCircle, Copy, ChevronRight } from "lucide-react";
+import offers from "../dummy_data/offers_data";
 
 export default function Offers() {
-    const offers = [
-        {
-            id: "1",
-            code: "NEWUSER50",
-            title: "50% OFF on First Order",
-            description: "Get 50% off up to ₹150 on your first order",
-            validTill: "Valid till tonight 10 PM",
-            terms: "Min order ₹200",
-            tag: "New Users",
-            color: "bg-blue-50",
-            borderColor: "border-blue-200",
-            textColor: "text-blue-600"
-        },
-        {
-            id: "2",
-            code: "WEEKEND40",
-            title: "Weekend Special 40% OFF",
-            description: "40% off on all orders above ₹500",
-            validTill: "Valid today",
-            terms: "Max discount ₹200",
-            tag: "Weekend",
-            color: "bg-orange-50",
-            borderColor: "border-orange-200",
-            textColor: "text-orange-600"
-        },
-        {
-            id: "3",
-            code: "BURGER30",
-            title: "30% OFF on Burgers",
-            description: "Get flat 30% off on all burgers",
-            validTill: "Valid for next 2 hours",
-            terms: "No minimum order",
-            tag: "Category Special",
-            color: "bg-green-50",
-            borderColor: "border-green-200",
-            textColor: "text-green-600"
-        },
-        {
-            id: "4",
-            code: "FREEDEL",
-            title: "Free Delivery",
-            description: "Free delivery on your next 3 orders",
-            validTill: "Valid for 24 hours",
-            terms: "Min order ₹300",
-            tag: "Limited Time",
-            color: "bg-purple-50",
-            borderColor: "border-purple-200",
-            textColor: "text-purple-600"
-        },
-        {
-            id: "5",
-            code: "BULKORDER15",
-            title: "Bulk Order Discount",
-            description: "Perfect for office lunches or family gatherings. Order 5 or more meals and save big!",
-            validTill: "Limited time offer",
-            terms: "5 meals minimum",
-            tag: "Most Popular",
-            color: "bg-yellow-50",
-            borderColor: "border-yellow-200",
-            textColor: "text-yellow-600"
-        },
-        {
-            id: "6",
-            code: "MONTHLY20",
-            title: "Monthly Meal Plan",
-            description: "Curated meals delivered to your doorstep every day. Pause or cancel anytime.",
-            validTill: "Monthly subscription",
-            terms: "Starts at $199/month",
-            tag: "Best Value",
-            color: "bg-blue-50",
-            borderColor: "border-blue-200",
-            textColor: "text-blue-600"
-        },
-        {
-            id: "birthday-special",
-            code: "BIRTHDAY40",
-            title: "Birthday Special",
-            description: "Make your celebration extra special with our curated party platters and desserts.",
-            validTill: "7 days validity",
-            terms: "Order 2hrs in advance",
-            tag: "Maximum Discount",
-            color: "bg-pink-50",
-            borderColor: "border-pink-200",
-            textColor: "text-pink-600"
-        },
-        {
-            id: "8",
-            code: "FREEMEAL",
-            title: "Daily Free Meal",
-            description: "Join our elite membership for exclusive perks, early access, and special discounts.",
-            validTill: "Annual membership",
-            terms: "Priority service",
-            tag: "New",
-            color: "bg-green-50",
-            borderColor: "border-green-200",
-            textColor: "text-green-600"
-        }
-    ];
 
     const [copied, setCopied] = React.useState(null);
 
-    const handleCopy = (code) => {
+    const handleCopy = (code: any) => {
         navigator.clipboard.writeText(code);
         setCopied(code);
         setTimeout(() => setCopied(null), 2000);

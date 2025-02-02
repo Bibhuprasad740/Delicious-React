@@ -4,6 +4,7 @@ import { ChevronRight, Star, Search, Clock, TrendingUp } from 'lucide-react';
 import api from '../lib/axios';
 import { FoodItem, Review } from '../types';
 import foodItems from '../dummy_data/food_items_data';
+import reviewsDummyData from '../dummy_data/reviews_data';
 
 export default function Home() {
   const [mealOfDay, setMealOfDay] = useState<FoodItem | null>(null);
@@ -18,36 +19,18 @@ export default function Home() {
     const fetchData = async () => {
       try {
         // randomly choose any index from foodItems array
-        const randomIndex = Math.floor(Math.random() * foodItems.length);
+        let randomIndex = Math.floor(Math.random() * foodItems.length);
         setMealOfDay(foodItems[randomIndex]);
-        setMostPopularDishes([foodItems[(randomIndex + 1)%foodItems.length], foodItems[(randomIndex + 2)%foodItems.length], foodItems[(randomIndex + 3)%foodItems.length]]);
+        setMostPopularDishes([foodItems[(randomIndex + 1) % foodItems.length], foodItems[(randomIndex + 2) % foodItems.length], foodItems[(randomIndex + 3) % foodItems.length]]);
+
+        randomIndex = Math.floor(Math.random() * reviewsDummyData.length);
 
         setRecentReviews([
-          {
-            id: '1',
-            userId: 'user1',
-            userName: 'John Doe',
-            foodId: '1',
-            foodName: 'Grilled Salmon Bowl',
-            foodImage: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=800',
-            rating: 4.5,
-            comment: 'Absolutely loved the fresh salmon and the combination of flavors. The quinoa was perfectly cooked!',
-            createdAt: '2024-10-27T10:00:00Z',
-          },
-          {
-            id: '2',
-            userId: 'user2',
-            userName: 'Jane Smith',
-            foodId: '2',
-            foodName: 'Chicken Tikka Masala',
-            foodImage: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&q=80&w=800',
-            rating: 5,
-            comment: 'The best Tikka Masala I\'ve had in a long time. Rich flavors and generous portions!',
-            createdAt: '2024-10-27T12:00:00Z',
-          },
+          reviewsDummyData[randomIndex],
+          reviewsDummyData[(randomIndex + 1) % reviewsDummyData.length],
         ]);
 
-        setRecentlyViewed([foodItems[(randomIndex + 4)%foodItems.length], foodItems[(randomIndex + 5)%foodItems.length], foodItems[(randomIndex + 6)%foodItems.length]]);
+        setRecentlyViewed([foodItems[(randomIndex + 4) % foodItems.length], foodItems[(randomIndex + 5) % foodItems.length], foodItems[(randomIndex + 6) % foodItems.length]]);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -70,6 +53,12 @@ export default function Home() {
       />
     ));
   };
+
+  const getFoodItemFromID = (foodItemId: string) => {
+    const foodItem = foodItems.find((foodItem) => foodItem.id === foodItemId);
+    console.log(foodItem);
+    return foodItem;
+  }
 
   if (isLoading) {
     return (
@@ -182,19 +171,19 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {recentReviews.map((review) => (
-            <Link key={review.id} to={`/meal/${review.foodId}`} className="group">
+            <Link key={review.id} to={`/meal/${review.foodItemId}`} className="group">
               <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
                 <div className="flex gap-4">
                   <div className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden">
                     <img
-                      src={review.foodImage}
-                      alt={review.foodName}
+                      src={getFoodItemFromID(review.foodItemId)?.image}
+                      alt={getFoodItemFromID(review.foodItemId)?.name}
                       className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                     />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-medium text-gray-900">{review.foodName}</h3>
+                      <h3 className="font-medium text-gray-900">{getFoodItemFromID(review.foodItemId)?.name}</h3>
                       <div className="flex items-center space-x-1">
                         {renderStars(review.rating)}
                       </div>

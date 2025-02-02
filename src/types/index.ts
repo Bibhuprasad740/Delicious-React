@@ -51,3 +51,30 @@ export interface Review {
   comment: string;
   createdAt: string;
 }
+
+export interface Offer {
+  id: string;
+  code: string;
+  title: string;
+  description: string;
+  discountPercentage: number;
+  validTill: string;
+  terms: string;
+  tag: string;
+  color: string;
+  borderColor: string;
+  textColor: string;
+  foodItems: FoodItem[];
+  applied: boolean;
+  appliedAt: string;
+  expiresAt: string;
+  maxDiscount: number;
+  minOrderAmount: number;
+}
+
+export interface Checkpoint {
+  label: string;
+  status: 'complete' | 'pending';
+  icon: React.ReactNode;
+  description: string;
+}

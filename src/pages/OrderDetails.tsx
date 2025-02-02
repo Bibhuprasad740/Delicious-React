@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CheckCircle, Clock, MapPin, Package, CreditCard, Receipt, ChevronRight } from 'lucide-react';
-import { Order } from '../types';
-
-interface Checkpoint {
-  label: string;
-  status: 'complete' | 'pending';
-  icon: React.ReactNode;
-  description: string;
-}
+import { Checkpoint, Order } from '../types';
 
 const checkpoints: Checkpoint[] = [
   { 
