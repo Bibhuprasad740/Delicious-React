@@ -56,14 +56,14 @@ export default function MealDetails() {
 
   if (isLoading || !meal) {
     return (
-      <div className="mb-10 flex items-center justify-center h-[calc(100vh-4rem)]">
+      <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-600" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="mb-12 min-h-screen bg-gray-50">
       {/* Main Content */}
       <div className="w-full px-0 py-0">
         <div className="bg-white p-6 lg:p-8 mb-8">

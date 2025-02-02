@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, User, Home, Menu, Gift } from 'lucide-react';
 import { useCartStore } from '../store/cartStore';
+import { motion } from 'framer-motion';
 
 export default function Navbar() {
   const location = useLocation();
@@ -58,10 +59,22 @@ export default function Navbar() {
         <li className={`w-1/4 text-center ${activeTab === '/cart' ? 'text-orange-500' : 'text-gray-400'}`}>
           <Link to="/cart">
             <button
-              className="w-full h-full flex flex-col items-center justify-center text-sm"
+              className="w-full h-full flex flex-col items-center justify-center text-sm relative"
               onClick={() => handleTabChange('/cart')}
             >
-              <ShoppingCart className="w-6 h-6" />
+              <div className="relative">
+                <ShoppingCart className="w-6 h-6" />
+                {cartItems.length > 0 && (
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+                    className="absolute -top-2 -right-2 bg-orange-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
+                  >
+                    {cartItems.length}
+                  </motion.span>
+                )}
+              </div>
               <span>Cart</span>
             </button>
           </Link>

@@ -78,3 +78,12 @@ export interface Checkpoint {
   icon: React.ReactNode;
   description: string;
 }
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  timestamp: string;
+  isRead: boolean;
+  type: 'order' | 'promo' | 'system';
+}

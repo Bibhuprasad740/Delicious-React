@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Star, Search, Clock, TrendingUp } from 'lucide-react';
+import { ChevronRight, Star, Search, Clock, TrendingUp, Bell, Menu, LogOut, User, Moon, Sun, Grid, List, Palette, LayoutGrid, Users, Settings, HelpCircle, Shield, X } from 'lucide-react';
 import api from '../lib/axios';
 import { FoodItem, Review } from '../types';
 import foodItems from '../dummy_data/food_items_data';
 import reviewsDummyData from '../dummy_data/reviews_data';
+import notificationsDummyData from '../dummy_data/notifications_data';
+import AppBar from '../components/Appbar';
 
 export default function Home() {
   const [mealOfDay, setMealOfDay] = useState<FoodItem | null>(null);
@@ -13,6 +15,10 @@ export default function Home() {
   const [recentlyViewed, setRecentlyViewed] = useState<FoodItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showSidePanel, setShowSidePanel] = useState(false);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isGridLayout, setIsGridLayout] = useState(true);
 
 
   useEffect(() => {
@@ -42,6 +48,28 @@ export default function Home() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const unreadCount = notificationsDummyData.filter((notification) => !notification.isRead).length;
+    setUnreadNotifications(unreadCount);
+    const darkTheme = localStorage.getItem('darkTheme');
+    setIsDarkTheme(darkTheme === 'true');
+    document.body.classList.toggle('dark', isDarkTheme);
+  }, []);
+
+  const handleSidePanelToggle = () => {
+    setShowSidePanel(!showSidePanel);
+  };
+
+  const handleDarkThemeToggle = () => {
+    setIsDarkTheme(!isDarkTheme);
+    localStorage.setItem('darkTheme', isDarkTheme ? 'false' : 'true');
+    document.body.classList.toggle('dark');
+  };
+
+  const handleLayoutToggle = () => {
+    setIsGridLayout(!isGridLayout);
+  };
+
   const renderStars = (rating: number) => {
     return [...Array(5)].map((_, index) => (
       <Star
@@ -70,6 +98,128 @@ export default function Home() {
 
   return (
     <div className="mb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* AppBar */}
+      <AppBar unreadNotifications={unreadNotifications}
+        handleSidePanelToggle={handleSidePanelToggle} />
+
+      {/* Side Panel (if open) */}
+      {showSidePanel && (
+        <div className="fixed inset-0 bg-black/50 z-50 transition-opacity">
+          <div
+            className="fixed top-0 left-0 h-full w-80 bg-white dark:bg-gray-800 shadow-xl transform transition-transform duration-300"
+          >
+            {/* Header with close button */}
+            <div className="p-6 border-b dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold dark:text-white">Menu</h2>
+                <button
+                  onClick={handleSidePanelToggle}
+                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                </button>
+              </div>
+            </div>
+
+            {/* User Profile Section */}
+            <div className="p-6 border-b dark:border-gray-700">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                  <User className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+                </div>
+                <div>
+                  <h3 className="font-medium dark:text-white">John Doe</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">john.doe@example.com</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Main Menu Items */}
+            <nav className="p-4">
+              <div className="space-y-1">
+                {/* Preferences Section */}
+                <div className="mb-6 space-y-4">
+                  <div className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <div className="flex items-center gap-3">
+                      <Palette className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                      <span className="text-sm font-medium dark:text-white">Theme</span>
+                    </div>
+                    <button
+                      onClick={handleDarkThemeToggle}
+                      className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-700"
+                    >
+                      {isDarkTheme ?
+                        <Moon className="h-4 w-4 text-gray-500 dark:text-gray-400" /> :
+                        <Sun className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                      }
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <div className="flex items-center gap-3">
+                      <LayoutGrid className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                      <span className="text-sm font-medium dark:text-white">Layout</span>
+                    </div>
+                    <button
+                      onClick={handleLayoutToggle}
+                      className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-700"
+                    >
+                      {isGridLayout ?
+                        <Grid className="h-4 w-4 text-gray-500 dark:text-gray-400" /> :
+                        <List className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                      }
+                    </button>
+                  </div>
+                </div>
+
+                {/* Navigation Links */}
+                <Link
+                  to="/community"
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <Users className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  <span className="text-sm font-medium dark:text-white">Community</span>
+                </Link>
+
+                <Link
+                  to="/settings"
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <Settings className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  <span className="text-sm font-medium dark:text-white">Settings</span>
+                </Link>
+
+                <Link
+                  to="/help-support"
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <HelpCircle className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  <span className="text-sm font-medium dark:text-white">Help & Support</span>
+                </Link>
+
+                <Link
+                  to="/privacy-policy"
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <Shield className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  <span className="text-sm font-medium dark:text-white">Privacy Policy</span>
+                </Link>
+              </div>
+            </nav>
+
+            {/* Logout Button */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 border-t dark:border-gray-700">
+              <button
+                className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="font-medium">Logout</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Meal of the Day Banner */}
       {mealOfDay && (
         <div className="relative h-[500px] rounded-2xl overflow-hidden mb-16 group">
