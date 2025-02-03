@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, MapPin, Package, CreditCard, Settings, Bell, Lock, Phone, Mail } from 'lucide-react';
+import { User, Package, CreditCard, Settings, Bell, Lock, Phone, Mail } from 'lucide-react';
 
 export default function Profile() {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Timer, Tag, Percent, AlertCircle, Copy, ChevronRight } from "lucide-react";
+import { Timer, Percent, AlertCircle, Copy, ChevronRight } from "lucide-react";
 import offers from "../dummy_data/offers_data";
 
 export default function Offers() {

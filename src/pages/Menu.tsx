@@ -1,57 +1,84 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import categories from "../dummy_data/categories_data";
+import { useState } from 'react';
+import { Search, ChevronRight } from 'lucide-react';
+import categories from '../dummy_data/categories_data';
+import foodItems from '../dummy_data/food_items_data';
+import FoodItemCard from '../components/FoodItemCard';
 
-export default function Menu() {
+const Menu = () => {
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]?.id || null);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredFoodItems = selectedCategory
+    ? foodItems.filter((item) =>
+      item.categoryId === selectedCategory &&
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    : [];
+
   return (
-    <div className="mb-10 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">Our Menu</h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Explore a wide range of delicious meals, beverages, and desserts crafted with love and fresh ingredients.
-          </p>
-        </div>
+    <div className="mb-14 min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-0">
+      <div className="max-w-7xl mx-auto space-y-8">
 
-        {/* Menu Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((category, index) => (
-            <motion.div
-              key={category.id}
-              className="relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all overflow-hidden group"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              {/* Category Image */}
-              <div className="h-48 overflow-hidden">
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
-                />
+
+        {/* Main Content */}
+        <div className="flex gap-4">
+          {/* Categories Sidebar */}
+          <div className="w-56 shrink-0 bg-white shadow-md">
+            <div className="p-4 h-full overflow-y-auto">
+              <div className="space-y-2">
+                {categories.map((category) => (
+                  <div
+                    key={category.id}
+                    className={`
+                      group relative p-4 rounded-lg cursor-pointer transition-all duration-200
+                      ${selectedCategory === category.id
+                        ? 'bg-orange-50 shadow-md'
+                        : 'hover:bg-slate-50'}
+                    `}
+                    onClick={() => setSelectedCategory(category.id)}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-lg overflow-hidden">
+                        <img
+                          src={category.image}
+                          alt={category.name}
+                          className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                        />
+                      </div>
+                      <span className="font-medium text-slate-700">{category.name}</span>
+                      <ChevronRight className={`
+                        ml-auto h-5 w-5 transition-transform
+                        ${selectedCategory === category.id
+                          ? 'rotate-90 text-orange-500'
+                          : 'text-slate-400'}
+                      `} />
+                    </div>
+                  </div>
+                ))}
               </div>
+            </div>
+          </div>
 
-              {/* Category Content */}
-              <div className="p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">{category.name}</h2>
-                <p className="text-gray-600 text-sm mb-4">{category.description}</p>
-                <p className="text-orange-600 font-semibold">4 items</p>
+          {/* Food Items Grid */}
+          <div className="flex-1 bg-white shadow-md">
+            <div className="p-4 h-full overflow-y-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredFoodItems.map((item) => (
+                  <FoodItemCard item={item} />
+                ))}
+                {filteredFoodItems.length === 0 && (
+                  <div className="col-span-full flex flex-col items-center justify-center py-12 text-slate-500">
+                    <Search className="h-12 w-12 mb-4" />
+                    <p className="text-lg">No items found. Try another search or category.</p>
+                  </div>
+                )}
               </div>
-
-              {/* View More Link */}
-              <Link
-                to={`/category/${category.id}`}
-                className="absolute bottom-0 left-0 right-0 bg-orange-600 text-white text-center py-3 font-semibold hover:bg-orange-700 transition-colors"
-              >
-                Explore →
-              </Link>
-            </motion.div>
-          ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Menu;
