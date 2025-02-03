@@ -1,4 +1,5 @@
 import { Menu, Bell } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface AppbarProps {
     unreadNotifications: number;
@@ -6,6 +7,7 @@ interface AppbarProps {
 }
 
 const AppBar: React.FC<AppbarProps> = ({ unreadNotifications, handleSidePanelToggle }) => {
+    const navigate = useNavigate();
 
     return (
         <div className="py-4 px-6 flex items-center justify-between mb-4">
@@ -22,9 +24,11 @@ const AppBar: React.FC<AppbarProps> = ({ unreadNotifications, handleSidePanelTog
 
             {/* Notifications Icon */}
             <div className="relative">
-                <button className="text-orange hover:text-gray-200 transition-colors">
-                    <Bell className="h-7 w-7" />
-                </button>
+                <Link to="/notifications">
+                    <button className="text-orange hover:text-gray-200 transition-colors">
+                        <Bell className="h-7 w-7" />
+                    </button>
+                </Link>
                 {unreadNotifications > 0 && (
                     <span className="absolute -top-1 -right-1 bg-orange-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                         {unreadNotifications}

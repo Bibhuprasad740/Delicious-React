@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
@@ -19,6 +18,7 @@ import Offers from './pages/Offers';
 import BirthdaySpecial from './pages/BirthdaySpecial';
 import CategoryDetails from './pages/CategoryDetails';
 import MonthlyMeal from './pages/MonthlyMeal';
+import Notifications from './pages/Notifications';
 
 function App() {
   return (
@@ -44,6 +44,7 @@ function App() {
               <Route path="/offers/birthday-special" element={<BirthdaySpecial />} />
               <Route path="/offers/monthly-meal" element={<MonthlyMeal />} />
               <Route path="/category/:categoryId" element={<CategoryDetails />} />
+              <Route path="/notifications" element={<Notifications />} />
             </Routes>
           </div>
           <nav className="bg-white border-t border-gray-200 fixed bottom-0 left-0 right-0 z-10">
