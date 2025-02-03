@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { useCartStore } from '../store/cartStore';
 import { FoodItem } from '../types';
-import { Zap, Search, X, Utensils } from 'lucide-react';
+import { Search, X, Utensils } from 'lucide-react';
 import { motion } from 'framer-motion';
 import foodItems from '../dummy_data/food_items_data';
+import OfferHeader from '../components/OfferHeader';
 
 const cutleryPrice = 10; // per plate
 
@@ -88,7 +89,7 @@ const MonthlyMeal = () => {
         };
 
         try {
-            addToCart(monthlyMealPlan, 1);
+            // addToCart(monthlyMealPlan, 1);
             setSelectedItems([]);
             setIncludeCutlery(false);
         } catch (error) {
@@ -99,15 +100,12 @@ const MonthlyMeal = () => {
     return (
         <div className="mb-12 max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 space-y-6">
             {/* Header Section */}
-            <div className="relative bg-gradient-to-r from-green-500 to-green-700 text-white p-8 rounded-2xl shadow-lg">
-                <div className="absolute top-4 left-4">
-                    <Zap className="text-yellow-300 w-10 h-10" />
-                </div>
-                <div className="text-center">
-                    <h1 className="text-4xl font-bold mb-2">Monthly Meal Plan</h1>
-                    <p className="text-lg">Customize your daily meals and enjoy a discount!</p>
-                </div>
-            </div>
+            <OfferHeader
+                title="Monthly Meal Plan"
+                subtitle="Customize your daily meals and get a discount!"
+                gradientFrom="from-green-500"
+                gradientTo="to-green-700"
+            />
 
             {/* Time Slot Selection */}
             <div className="space-y-4">
@@ -128,8 +126,8 @@ const MonthlyMeal = () => {
                                 }
                             }}
                             className={`p-4 rounded-xl ${selectedTimeSlots.includes(slot)
-                                    ? 'bg-green-100 text-green-800'
-                                    : 'bg-gray-100 text-gray-800'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-gray-100 text-gray-800'
                                 } hover:bg-green-100 hover:text-green-800 transition-colors`}
                         >
                             {slot}
@@ -147,6 +145,7 @@ const MonthlyMeal = () => {
                 return (
                     <div key={timeSlot} className="space-y-4">
                         <h3 className="font-semibold text-gray-700">{timeSlot} Meals</h3>
+
                         <div className="relative" ref={(el) => (searchRefs.current[timeSlot] = el)}>
                             <div className="relative">
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />

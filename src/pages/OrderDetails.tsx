@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CheckCircle, Clock, MapPin, Package, CreditCard, Receipt, ChevronRight } from 'lucide-react';
+import { CheckCircle, Clock, MapPin, Package, Receipt, ChevronRight } from 'lucide-react';
 import { Checkpoint, Order } from '../types';
 
 const checkpoints: Checkpoint[] = [

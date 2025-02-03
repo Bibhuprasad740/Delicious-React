@@ -1,18 +1,5 @@
 import { create } from 'zustand';
-
-export interface Address {
-  id: string;
-  name: string;
-  phoneNumber: string;
-  houseNumber: string;
-  street: string;
-  landmark: string;
-  city: string;
-  district: string;
-  state: string;
-  pincode: string;
-  isDefault: boolean;
-}
+import { Address } from '../types';
 
 interface AddressStore {
   addresses: Address[];

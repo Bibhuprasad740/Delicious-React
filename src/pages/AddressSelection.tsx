@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { MapPin, Plus, Check, Trash2, Home } from 'lucide-react';
-import { useAddressStore, Address } from '../store/addressStore';
+import { Plus, Trash2, Home } from 'lucide-react';
+import { useAddressStore } from '../store/addressStore';
+import { Address } from '../types';
+import users from '../dummy_data/users_data';
 
 export default function AddressSelection() {
   const navigate = useNavigate();
@@ -17,7 +19,9 @@ export default function AddressSelection() {
     city: '',
     district: '',
     state: '',
-    pincode: ''
+    pincode: '',
+    isDefault: false,
+    userId: users[0].id,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +42,9 @@ export default function AddressSelection() {
       city: '',
       district: '',
       state: '',
-      pincode: ''
+      pincode: '',
+      isDefault: false,
+      userId: '',
     });
     toast.success('Address added successfully!');
   };

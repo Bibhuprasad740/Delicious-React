@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Star, Search, Clock, TrendingUp, Bell, Menu, LogOut, User, Moon, Sun, Grid, List, Palette, LayoutGrid, Users, Settings, HelpCircle, Shield, X } from 'lucide-react';
+import { ChevronRight, Star, Search, Clock, TrendingUp } from 'lucide-react';
 import api from '../lib/axios';
 import { FoodItem, Review } from '../types';
-import foodItems from '../dummy_data/food_items_data';
-import reviewsDummyData from '../dummy_data/reviews_data';
 import notificationsDummyData from '../dummy_data/notifications_data';
 import AppBar from '../components/Appbar';
+import FoodItemCard from '../components/FoodItemCard';
+import ReviewCard from '../components/ReviewCard';
+import SidePanel from '../components/SidePannel';
+import users from '../dummy_data/users_data';
+import foodItems from '../dummy_data/food_items_data';
+import reviewsDummyData from '../dummy_data/reviews_data';
 
 export default function Home() {
   const [mealOfDay, setMealOfDay] = useState<FoodItem | null>(null);
@@ -82,12 +86,6 @@ export default function Home() {
     ));
   };
 
-  const getFoodItemFromID = (foodItemId: string) => {
-    const foodItem = foodItems.find((foodItem) => foodItem.id === foodItemId);
-    console.log(foodItem);
-    return foodItem;
-  }
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
@@ -103,126 +101,19 @@ export default function Home() {
         handleSidePanelToggle={handleSidePanelToggle} />
 
       {/* Side Panel (if open) */}
-      {showSidePanel && (
-        <div className="fixed inset-0 bg-black/50 z-50 transition-opacity">
-          <div
-            className="fixed top-0 left-0 h-full w-80 bg-white dark:bg-gray-800 shadow-xl transform transition-transform duration-300"
-          >
-            {/* Header with close button */}
-            <div className="p-6 border-b dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold dark:text-white">Menu</h2>
-                <button
-                  onClick={handleSidePanelToggle}
-                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                </button>
-              </div>
-            </div>
-
-            {/* User Profile Section */}
-            <div className="p-6 border-b dark:border-gray-700">
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                  <User className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-                </div>
-                <div>
-                  <h3 className="font-medium dark:text-white">John Doe</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">john.doe@example.com</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Main Menu Items */}
-            <nav className="p-4">
-              <div className="space-y-1">
-                {/* Preferences Section */}
-                <div className="mb-6 space-y-4">
-                  <div className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <div className="flex items-center gap-3">
-                      <Palette className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                      <span className="text-sm font-medium dark:text-white">Theme</span>
-                    </div>
-                    <button
-                      onClick={handleDarkThemeToggle}
-                      className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-700"
-                    >
-                      {isDarkTheme ?
-                        <Moon className="h-4 w-4 text-gray-500 dark:text-gray-400" /> :
-                        <Sun className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-                      }
-                    </button>
-                  </div>
-
-                  <div className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <div className="flex items-center gap-3">
-                      <LayoutGrid className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                      <span className="text-sm font-medium dark:text-white">Layout</span>
-                    </div>
-                    <button
-                      onClick={handleLayoutToggle}
-                      className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-700"
-                    >
-                      {isGridLayout ?
-                        <Grid className="h-4 w-4 text-gray-500 dark:text-gray-400" /> :
-                        <List className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-                      }
-                    </button>
-                  </div>
-                </div>
-
-                {/* Navigation Links */}
-                <Link
-                  to="/community"
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <Users className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                  <span className="text-sm font-medium dark:text-white">Community</span>
-                </Link>
-
-                <Link
-                  to="/settings"
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <Settings className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                  <span className="text-sm font-medium dark:text-white">Settings</span>
-                </Link>
-
-                <Link
-                  to="/help-support"
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <HelpCircle className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                  <span className="text-sm font-medium dark:text-white">Help & Support</span>
-                </Link>
-
-                <Link
-                  to="/privacy-policy"
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <Shield className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                  <span className="text-sm font-medium dark:text-white">Privacy Policy</span>
-                </Link>
-              </div>
-            </nav>
-
-            {/* Logout Button */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 border-t dark:border-gray-700">
-              <button
-                className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                <LogOut className="h-4 w-4" />
-                <span className="font-medium">Logout</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SidePanel
+        isOpen={showSidePanel}
+        onClose={handleSidePanelToggle}
+        isDarkTheme={isDarkTheme}
+        onToggleDarkTheme={handleDarkThemeToggle}
+        isGridLayout={isGridLayout}
+        onToggleLayout={handleLayoutToggle}
+        user={users[1]}
+      />
 
       {/* Meal of the Day Banner */}
       {mealOfDay && (
-        <div className="relative h-[500px] rounded-2xl overflow-hidden mb-16 group">
+        <div className="relative h-[500px] rounded-2xl overflow-hidden mb-8 group">
           <img
             src={mealOfDay.image}
             alt={mealOfDay.name}
@@ -249,7 +140,7 @@ export default function Home() {
       )}
 
       {/* Search Bar */}
-      <div className="relative mb-12">
+      <div className="relative mb-8">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Search className="h-5 w-5 text-gray-400" />
         </div>
@@ -273,42 +164,7 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {mostPopularDishes.map((item) => (
-            <Link key={item.id} to={`/meal/${item.id}`} className="group">
-              <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-sm font-medium">
-                    ${item.price.toFixed(2)}
-                  </div>
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center space-x-1 mb-2">
-                    {renderStars(item.rating)}
-                  </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">{item.name}</h3>
-                  <p className="text-gray-500 text-sm line-clamp-2">{item.description}</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <div className="flex items-center space-x-1">
-                      <div
-                        className={`flex items-center justify-center w-4 h-4 border-2 rounded-sm ${item.dietaryType === 'veg' ? 'border-green-700' : 'border-red-700'
-                          }`}
-                      >
-                        <div
-                          className={`w-2 h-2 rounded-full ${item.dietaryType === 'veg' ? 'bg-green-700' : 'bg-red-700'
-                            }`}
-                        ></div>
-                      </div>
-                    </div>
-
-                    <span className="text-sm text-gray-500">{item.calories} cal</span>
-                  </div>
-                </div>
-              </div>
-            </Link>
+            <FoodItemCard key={item.id} item={item} />
           ))}
         </div>
       </div>
@@ -321,34 +177,7 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {recentReviews.map((review) => (
-            <Link key={review.id} to={`/meal/${review.foodItemId}`} className="group">
-              <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden">
-                    <img
-                      src={getFoodItemFromID(review.foodItemId)?.image}
-                      alt={getFoodItemFromID(review.foodItemId)?.name}
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-medium text-gray-900">{getFoodItemFromID(review.foodItemId)?.name}</h3>
-                      <div className="flex items-center space-x-1">
-                        {renderStars(review.rating)}
-                      </div>
-                    </div>
-                    <p className="text-gray-600 text-sm line-clamp-2 mb-2">{review.comment}</p>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">{review.userName}</span>
-                      <span className="text-gray-400">
-                        {new Date(review.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
+            <ReviewCard key={review.id} review={review} />
           ))}
         </div>
       </div>
@@ -361,41 +190,7 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {recentlyViewed.map((item) => (
-            <Link key={item.id} to={`/meal/${item.id}`} className="group">
-              <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-sm font-medium">
-                    ${item.price.toFixed(2)}
-                  </div>
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center space-x-1 mb-2">
-                    {renderStars(item.rating)}
-                  </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">{item.name}</h3>
-                  <p className="text-gray-500 text-sm line-clamp-2">{item.description}</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <div className="flex items-center space-x-1">
-                      <div
-                        className={`flex items-center justify-center w-4 h-4 border-2 rounded-sm ${item.dietaryType === 'veg' ? 'border-green-700' : 'border-red-700'
-                          }`}
-                      >
-                        <div
-                          className={`w-2 h-2 rounded-full ${item.dietaryType === 'veg' ? 'bg-green-700' : 'bg-red-700'
-                            }`}
-                        ></div>
-                      </div>
-                    </div>
-                    <span className="text-sm text-gray-500">{item.calories} cal</span>
-                  </div>
-                </div>
-              </div>
-            </Link>
+            <FoodItemCard key={item.id} item={item} />
           ))}
         </div>
       </div>

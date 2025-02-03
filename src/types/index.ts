@@ -40,6 +40,7 @@ export interface Order {
   total: number;
   status: 'pending' | 'preparing' | 'delivering' | 'delivered';
   createdAt: string;
+  userId: string;
 }
 
 export interface Review {
@@ -86,4 +87,34 @@ export interface Notification {
   timestamp: string;
   isRead: boolean;
   type: 'order' | 'promo' | 'system';
+}
+
+export interface Address {
+  id: string;
+  name: string;
+  phoneNumber: string;
+  houseNumber: string;
+  street: string;
+  landmark: string;
+  city: string;
+  district: string;
+  state: string;
+  pincode: string;
+  isDefault: boolean;
+  userId: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  addresses: Address[],
+  phone?: string;
+  orders: Order[];
+  reviews: Review[];
+  notifications: Notification[];
+  cart: CartItem[];
+  offers: Offer[];
+  wishlist: FoodItem[];
+  recentlyViewedItems: FoodItem[];
 }

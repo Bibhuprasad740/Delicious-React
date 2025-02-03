@@ -26,7 +26,7 @@ export default function Checkout() {
         id: crypto.randomUUID(),
         items: items,
         total: calculateTotal(),
-        status: 'Placed',
+        status: 'pending',
         createdAt: new Date().toISOString(),
       };
 

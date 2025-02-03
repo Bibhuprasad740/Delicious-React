@@ -2,13 +2,14 @@ import { Link, useParams } from 'react-router-dom';
 import { TrendingUp } from 'lucide-react';
 import foodItems from '../dummy_data/food_items_data';
 import categories from '../dummy_data/categories_data';
+import FoodItemCard from '../components/FoodItemCard';
 
 export default function CategoryDetails() {
     const { categoryId } = useParams();
     const filteredFoods = foodItems.filter((food) => food.categoryId === categoryId);
     const category = categories.find(c => c.id === categoryId);
 
-    const renderStars = (rating) => {
+    const renderStars = (rating: number) => {
         return [...Array(5)].map((_, index) => (
             <svg
                 key={index}
@@ -27,53 +28,17 @@ export default function CategoryDetails() {
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-2">
                     <TrendingUp className="h-6 w-6 text-orange-600" />
-                    <h1 className="text-2xl font-bold">{category.name}</h1>
+                    <h1 className="text-2xl font-bold">{category?.name}</h1>
                 </div>
                 <Link to="/menu" className="text-orange-600 hover:text-orange-700 font-medium">
                     Back to Menu
                 </Link>
             </div>
-            <p className="text-gray-600 mb-8">{category.description}</p>
+            <p className="text-gray-600 mb-8">{category?.description}</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {filteredFoods?.map((item) => (
-                    <Link key={item.id} to={`/meal/${item.id}`} className="group">
-                        <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-                            <div className="relative h-48 overflow-hidden">
-                                <img
-                                    src={item.image}
-                                    alt={item.name}
-                                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                                />
-                                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-sm font-medium">
-                                    {item.price}
-                                </div>
-                            </div>
-                            <div className="p-4">
-                                <div className="flex items-center space-x-1 mb-2">
-                                    {renderStars(4)} {/* You might want to add a rating field to your data */}
-                                </div>
-                                <h3 className="text-lg font-medium text-gray-900 mb-1">{item.name}</h3>
-                                <p className="text-gray-500 text-sm line-clamp-2">{item.description}</p>
-                                <div className="mt-3 flex items-center justify-between">
-                                    <div className="flex items-center space-x-1">
-                                        <div
-                                            className={`flex items-center justify-center w-4 h-4 border-2 rounded-sm ${item.dietaryType == 'veg' ? 'border-green-700' : 'border-red-700'
-                                                }`}
-                                        >
-                                            <div
-                                                className={`w-2 h-2 rounded-full ${item.dietaryType == 'veg' ? 'bg-green-700' : 'bg-red-700'
-                                                    }`}
-                                            ></div>
-                                        </div>
-                                    </div>
-                                    <span className="text-sm text-gray-500">
-                                        {item.calories || '300'} cal {/* You might want to add a calories field to your data */}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </Link>
+                    <FoodItemCard key={item.id} item={item} />
                 ))}
             </div>
         </div>
