@@ -16,21 +16,33 @@ const Menu = () => {
     : [];
 
   return (
-    <div className="mb-14 min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-0">
+    <div className="mb-10 min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-0">
       <div className="max-w-7xl mx-auto space-y-8">
-
+        {/* Search Bar */}
+        <div className="relative mb-4 m-6">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            placeholder="Search for your favorite dishes..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-4 border-0 ring-1 ring-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 transition-shadow text-lg"
+          />
+        </div>
 
         {/* Main Content */}
-        <div className="flex gap-4">
+        <div className="flex gap-0 border-orange-500">
           {/* Categories Sidebar */}
-          <div className="w-56 shrink-0 bg-white shadow-md">
-            <div className="p-4 h-full overflow-y-auto">
+          <div className="w-48 shrink-0 bg-white shadow-md">
+            <div className="p-2 h-full overflow-y-auto">
               <div className="space-y-2">
                 {categories.map((category) => (
                   <div
                     key={category.id}
                     className={`
-                      group relative p-4 rounded-lg cursor-pointer transition-all duration-200
+                      group relative px-2 py-4 rounded-lg cursor-pointer transition-all duration-200
                       ${selectedCategory === category.id
                         ? 'bg-orange-50 shadow-md'
                         : 'hover:bg-slate-50'}
@@ -61,7 +73,7 @@ const Menu = () => {
 
           {/* Food Items Grid */}
           <div className="flex-1 bg-white shadow-md">
-            <div className="p-4 h-full overflow-y-auto">
+            <div className="px-1 py-4 h-full overflow-y-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredFoodItems.map((item) => (
                   <FoodItemCard item={item} />
