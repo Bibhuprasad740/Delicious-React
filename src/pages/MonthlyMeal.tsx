@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useCartStore } from '../store/cartStore';
-import { FoodItem } from '../types';
+import { CartItem, FoodItem, TimeSlot } from '../types';
 import { Search, X, Utensils } from 'lucide-react';
 import { motion } from 'framer-motion';
 import foodItems from '../dummy_data/food_items_data';
@@ -74,22 +74,29 @@ const MonthlyMeal = () => {
     const handleAddToCart = () => {
         if (selectedItems.length === 0) return;
 
-        const monthlyMealPlan = {
-            id: 'monthly-meal-' + Date.now(),
-            name: 'Monthly Meal Plan',
-            description: `Includes: ${selectedItems.map((slot) => `${slot.timeSlot}: ${slot.items.map((i) => i.name).join(', ')}`).join('; ')}`,
-            price: calculateTotalPrice(),
-            image: selectedItems[0].items[0].image,
-            categoryId: 'monthly',
-            rating: 5,
-            calories: selectedItems.reduce((sum, slot) => sum + slot.items.reduce((itemSum, item) => itemSum + item.calories, 0), 0),
-            ingredients: selectedItems.flatMap((slot) => slot.items.flatMap((item) => item.ingredients)),
-            dietaryType: selectedItems.some((slot) => slot.items.some((item) => item.dietaryType === 'non-veg')) ? 'non-veg' : 'veg',
-            images: selectedItems.flatMap((slot) => slot.items.map((item) => item.image)),
-        };
-
         try {
-            // addToCart(monthlyMealPlan, 1);
+            for (let item of selectedItems) {
+                const timeSlot = item.timeSlot as string;
+                const timeslot: TimeSlot = {
+                    id: crypto.randomUUID(),
+                    slot: timeSlot,
+                    time: '9.00 AM'
+                }
+                const items = item.items as FoodItem[];
+                for (let i = 0; i < items.length; i++) {
+                    const cartItem: CartItem = {
+                        id: items[i].id,
+                        foodItem: items[i],
+                        quantity: 30,
+                        discount: 5,
+                        type: 'monthly-meal',
+                        timeslot: timeslot,
+                    };
+
+                    addToCart(cartItem);
+                }
+            }
+
             setSelectedItems([]);
             setIncludeCutlery(false);
         } catch (error) {
@@ -249,7 +256,7 @@ const MonthlyMeal = () => {
                         onClick={handleAddToCart}
                         className="w-full py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors"
                     >
-                        Save
+                        Add to Cart
                     </button>
                 </div>
             )}

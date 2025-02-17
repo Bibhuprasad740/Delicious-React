@@ -1,15 +1,26 @@
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Minus, Plus, Trash2, ShoppingBag, MapPin } from 'lucide-react';
+import {ShoppingBag, MapPin, Cake, Coffee, Calendar } from 'lucide-react';
 import { useCartStore } from '../store/cartStore';
+import { CartItem } from '../types';
+import MealTypeSection from '../components/MealTypeSection';
 
 export default function Cart() {
   const navigate = useNavigate();
   const { items, updateQuantity, removeFromCart } = useCartStore();
 
+  // Group items by type
+  const groupedItems = items.reduce((acc, item) => {
+    const type = item.type;
+    if (!acc[type]) {
+      acc[type] = [];
+    }
+    acc[type].push(item);
+    return acc;
+  }, {} as Record<string, CartItem[]>);
+
   const calculateTotal = () => {
     return items.reduce(
-      (total, item) => total + item.item.price * item.quantity,
+      (total, item) => total + item.foodItem.price * item.quantity,
       0
     );
   };
@@ -36,64 +47,70 @@ export default function Cart() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <ul className="divide-y divide-gray-200">
-              {items.map((cartItem) => (
-                <li key={cartItem.item.id} className="p-6">
-                  <div className="flex items-center">
-                    <img
-                      src={cartItem.item.image}
-                      alt={cartItem.item.name}
-                      className="h-24 w-24 object-cover rounded-md"
-                    />
-                    <div className="ml-6 flex-1">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-medium text-gray-900">
-                          {cartItem.item.name}
-                        </h3>
-                        <p className="text-lg font-medium text-gray-900">
-                          ${(cartItem.item.price * cartItem.quantity).toFixed(2)}
-                        </p>
-                      </div>
-                      <p className="mt-1 text-sm text-gray-500">
-                        {cartItem.item.description}
-                      </p>
-                      <div className="mt-4 flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <button
-                            onClick={() => updateQuantity(cartItem.item.id, cartItem.quantity - 1)}
-                            className="p-1 rounded-md hover:bg-gray-100"
-                            disabled={cartItem.quantity <= 1}
-                          >
-                            <Minus className="h-5 w-5 text-gray-500" />
-                          </button>
-                          <span className="text-gray-700">{cartItem.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(cartItem.item.id, cartItem.quantity + 1)}
-                            className="p-1 rounded-md hover:bg-gray-100"
-                          >
-                            <Plus className="h-5 w-5 text-gray-500" />
-                          </button>
-                        </div>
-                        <button
-                          onClick={() => removeFromCart(cartItem.item.id)}
-                          className="text-red-600 hover:text-red-700"
-                        >
-                          <Trash2 className="h-5 w-5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Use MealTypeSection for different meal types */}
+          {Object.keys(groupedItems).map(type => (
+            <MealTypeSection
+              key={type}
+              type={type}
+              items={groupedItems[type]}
+              updateQuantity={updateQuantity}
+              removeFromCart={removeFromCart}
+            />
+          ))}
         </div>
 
         <div className="lg:col-span-1">
           <div className="bg-white rounded-lg shadow-md p-6 sticky top-8">
             <h2 className="text-lg font-medium text-gray-900 mb-4">Order Summary</h2>
             <div className="space-y-4">
+              {/* Display birthday specials summary if they exist */}
+              {groupedItems['birthday-special'] && groupedItems['birthday-special'].length > 0 && (
+                <div className="flex items-center justify-between text-orange-700 bg-orange-50 p-2 rounded-md">
+                  <div className="flex items-center">
+                    <Cake className="h-4 w-4 mr-2" />
+                    <p>Birthday Special Items</p>
+                  </div>
+                  <p>
+                    ${groupedItems['birthday-special'].reduce(
+                      (total, item) => total + item.foodItem.price * item.quantity,
+                      0
+                    ).toFixed(2)}
+                  </p>
+                </div>
+              )}
+
+              {/* Display monthly meal summary if they exist */}
+              {groupedItems['monthly-meal'] && groupedItems['monthly-meal'].length > 0 && (
+                <div className="flex items-center justify-between text-green-700 bg-green-50 p-2 rounded-md">
+                  <div className="flex items-center">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    <p>Monthly Special Items</p>
+                  </div>
+                  <p>
+                    ${groupedItems['monthly-meal'].reduce(
+                      (total, item) => total + item.foodItem.price * item.quantity,
+                      0
+                    ).toFixed(2)}
+                  </p>
+                </div>
+              )}
+
+              {/* Display regular items summary if they exist */}
+              {groupedItems['regular'] && groupedItems['regular'].length > 0 && (
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Coffee className="h-4 w-4 mr-2 text-gray-600" />
+                    <p className="text-gray-600">Regular Menu Items</p>
+                  </div>
+                  <p className="text-gray-900">
+                    ${groupedItems['regular'].reduce(
+                      (total, item) => total + item.foodItem.price * item.quantity,
+                      0
+                    ).toFixed(2)}
+                  </p>
+                </div>
+              )}
+
               <div className="flex items-center justify-between">
                 <p className="text-gray-600">Subtotal</p>
                 <p className="text-gray-900">${calculateTotal().toFixed(2)}</p>

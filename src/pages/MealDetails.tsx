@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { Star, Minus, Plus, ShoppingCart, Leaf, Drumstick } from 'lucide-react';
-import { FoodItem, Review } from '../types';
+import { CartItem, FoodItem, Review } from '../types';
 import { useCartStore } from '../store/cartStore';
 import foodItems from '../dummy_data/food_items_data';
 import reviewsDummyData from '../dummy_data/reviews_data';
@@ -45,7 +45,14 @@ export default function MealDetails() {
 
     setIsAddingToCart(true);
     try {
-      addToCart(meal, quantity);
+      const cartItem: CartItem = {
+        id: crypto.randomUUID(),
+        foodItem: meal,
+        quantity: quantity,
+        type: 'regular',
+      };
+              
+      addToCart(cartItem);
       toast.success('Added to cart!');
     } catch (error) {
       toast.error('Failed to add to cart');
@@ -66,7 +73,7 @@ export default function MealDetails() {
     <div className="mb-12 min-h-screen bg-gray-50">
       {/* Main Content */}
       <div className="w-full px-0 py-0">
-        <div className="bg-white p-6 lg:p-8 mb-8">
+        <div className="bg-white p-4 lg:p-8 mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Image Gallery */}
             <div className="space-y-4">

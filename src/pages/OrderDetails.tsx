@@ -43,7 +43,7 @@ export default function OrderDetails() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (currentCheckpoint < checkpoints.length - 1 && order?.status !== 'Delivered') {
+      if (currentCheckpoint < checkpoints.length - 1) {
         setCurrentCheckpoint((prev) => prev + 1);
       }
     }, 2000);

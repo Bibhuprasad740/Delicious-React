@@ -1,27 +1,12 @@
 import { create } from 'zustand';
-import { FoodItem } from '../types';
-
-interface CartItem {
-  item: FoodItem;
-  quantity: number;
-}
+import { CartItem, FoodItem } from '../types';
 
 interface CartStore {
   items: CartItem[];
-  addToCart: (item: FoodItem, quantity: number) => void;
+  addToCart: (cartItem: CartItem) => void;
   removeFromCart: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
-}
-
-interface CartItem {
-  item: FoodItem;
-  quantity: number;
-  isBirthdaySpecial?: boolean;
-  addons?: {
-    cutlery: boolean;
-    softDrinks: number;
-  };
 }
 
 // Load cart from localStorage on store initialization
@@ -38,19 +23,23 @@ const saveCartToStorage = (items: CartItem[]) => {
 export const useCartStore = create<CartStore>((set, get) => ({
   items: loadCartFromStorage(),
 
-  addToCart: (item: FoodItem, quantity: number) => {
+  addToCart: (cartItem: CartItem) => {
+    const item = cartItem.foodItem as FoodItem;
+    const quantity = cartItem.quantity as number;
+
     set((state) => {
-      const existingItem = state.items.find((i) => i.item.id === item.id);
+      const existingItem = state.items.find((i) => i.foodItem.id === item.id);
       let newItems;
 
       if (existingItem) {
         newItems = state.items.map((i) =>
-          i.item.id === item.id
+          i.foodItem.id === item.id
             ? { ...i, quantity: i.quantity + quantity }
             : i
         );
       } else {
-        newItems = [...state.items, { item, quantity }];
+        
+        newItems = [...state.items, cartItem];
       }
 
       saveCartToStorage(newItems);
@@ -60,7 +49,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
   removeFromCart: (itemId: string) => {
     set((state) => {
-      const newItems = state.items.filter((i) => i.item.id !== itemId);
+      const newItems = state.items.filter((i) => i.foodItem.id !== itemId);
       saveCartToStorage(newItems);
       return { items: newItems };
     });
@@ -69,7 +58,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
   updateQuantity: (itemId: string, quantity: number) => {
     set((state) => {
       const newItems = state.items.map((i) =>
-        i.item.id === itemId ? { ...i, quantity } : i
+        i.foodItem.id === itemId ? { ...i, quantity } : i
       );
       saveCartToStorage(newItems);
       return { items: newItems };

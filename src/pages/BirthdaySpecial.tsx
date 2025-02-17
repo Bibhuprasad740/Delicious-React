@@ -1,14 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { useCartStore } from '../store/cartStore';
-import { FoodItem } from '../types';
+import { CartItem, FoodItem } from '../types';
 import foodItems from '../dummy_data/food_items_data';
 import SearchComponent from '../components/Search';
 import SelectedItem from '../components/SelectedItem';
 import OptionsSection from '../components/OptionsSection';
 import OfferHeader from '../components/OfferHeader';
 
-const cutleryPrice = 10; // per plate
-const softDrinkPrice = 30; // per soft drink
+const cutleryPrice = 2; // per plate
+const softDrinkPrice = 20; // per soft drink
 
 const BirthdaySpecial = () => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -51,19 +51,16 @@ const BirthdaySpecial = () => {
     const handleAddToCart = () => {
         if (selectedItems.length === 0) return;
 
-        const birthdayPlatter = {
-            id: 'birthday-platter-' + Date.now(),
-            name: 'Birthday Platter',
-            description: `Includes: ${selectedItems.map((i) => i.name).join(', ')}`,
-            price: calculateTotalPrice(),
-            image: selectedItems[0].image,
-            categoryId: 'special',
-            rating: 5,
-            calories: selectedItems.reduce((sum, item) => sum + item.calories, 0),
-            ingredients: selectedItems.flatMap((item) => item.ingredients),
-            dietaryType: selectedItems.some((item) => item.dietaryType === 'non-veg') ? 'non-veg' : 'veg',
-            images: selectedItems.map((item) => item.image),
-        };
+        for(let i = 0; i < selectedItems.length; i++) {
+            const cartItem: CartItem = {
+                id: selectedItems[i].id,
+                foodItem: selectedItems[i],
+                quantity: numPlates,
+                type: 'birthday-special',
+            }
+            
+            addToCart(cartItem);
+        }
 
         try {
             // addToCart(birthdayPlatter, numPlates);

@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { useCartStore } from '../store/cartStore';
 import { useAddressStore } from '../store/addressStore';
-import { Order } from '../types';
+import { Order, CartItem } from '../types';
+import users from '../dummy_data/users_data';
 
 export default function Checkout() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function Checkout() {
   const [isLoading, setIsLoading] = useState(false);
 
   const calculateTotal = () => {
-    return items.reduce((total, item) => total + item.item.price * item.quantity, 0) + 5; // +5 for delivery fee
+    return items.reduce((total, item) => total + item.foodItem.price * item.quantity, 0) + 5; // +5 for delivery fee
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,7 +25,8 @@ export default function Checkout() {
       // In a real app, this would make an API call to create the order
       const newOrder: Order = {
         id: crypto.randomUUID(),
-        items: items,
+        items: [],
+        userId: users[0].id,
         total: calculateTotal(),
         status: 'pending',
         createdAt: new Date().toISOString(),

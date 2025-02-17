@@ -28,10 +28,19 @@ export interface FoodItem {
   images: string[];
 }
 
+export interface TimeSlot {
+  id: string;
+  slot: string;
+  time: string;
+}
+
 export interface CartItem {
   id: string;
   foodItem: FoodItem;
   quantity: number;
+  discount?: number;
+  type: 'regular' | 'birthday-special' | 'monthly-meal';
+  timeslot?: TimeSlot;
 }
 
 export interface Order {
