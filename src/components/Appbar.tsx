@@ -1,5 +1,5 @@
 import { Menu, Bell } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface AppbarProps {
     unreadNotifications: number;
@@ -7,7 +7,6 @@ interface AppbarProps {
 }
 
 const AppBar: React.FC<AppbarProps> = ({ unreadNotifications, handleSidePanelToggle }) => {
-    const navigate = useNavigate();
 
     return (
         <div className="py-4 px-6 flex items-center justify-between mb-4">

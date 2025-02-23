@@ -43,6 +43,7 @@ const users: User[] = [
                 items: [
                     {
                         id: "cart-001",
+                        type: 'regular',
                         foodItem: {
                             id: "food-001",
                             name: "Margherita Pizza",
@@ -119,6 +120,7 @@ const users: User[] = [
                 items: [
                     {
                         id: "cart-002",
+                        type: 'regular',
                         foodItem: {
                             id: "food-002",
                             name: "Sushi Platter",
@@ -155,6 +157,7 @@ const users: User[] = [
         cart: [
             {
                 id: "cart-003",
+                type: 'regular',
                 foodItem: {
                     id: "food-003",
                     name: "Caesar Salad",
